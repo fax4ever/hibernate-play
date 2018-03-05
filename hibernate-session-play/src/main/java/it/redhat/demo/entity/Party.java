@@ -35,6 +35,20 @@ public class Party {
 		this.location = location;
 	}
 
+	public Integer getId() {
+		return id;
+	}
 
+	public String getName() {
+		return name;
+	}
+
+	public LocalDateTime getMoment() {
+		return moment;
+	}
+
+	public String getLocation() {
+		return location;
+	}
 
 }
