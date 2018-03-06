@@ -1,13 +1,14 @@
 package it.redhat.demo.test;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDateTime;
 import javax.persistence.PersistenceException;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import it.redhat.demo.entity.Party;
 
@@ -15,6 +16,9 @@ import it.redhat.demo.entity.Party;
  * @author Fabio Massimo Ercoli
  */
 public class NativeQueryPartialEntityTest extends BaseSessionTest {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void test_nativeQuery_fullEntity() {
@@ -34,8 +38,12 @@ public class NativeQueryPartialEntityTest extends BaseSessionTest {
 		} );
 	}
 
-	@Test(expected = PersistenceException.class)
+	@Test
 	public void test_nativeQuery_partialEntity() {
+
+		thrown.expect( PersistenceException.class );
+		thrown.expectMessage( "org.hibernate.exception.SQLGrammarException: could not execute query" );
+
 		inTransaction( session ->
 		   session.persist( new Party( 2, "We're Cool", LocalDateTime.of( 2018, 11, 21, 22, 30, 0 ), "London" ) )
 		);
