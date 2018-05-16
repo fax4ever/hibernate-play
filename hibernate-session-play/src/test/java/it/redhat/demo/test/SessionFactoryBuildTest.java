@@ -10,6 +10,7 @@ import org.junit.Test;
 import it.redhat.demo.entity.EntityA;
 import it.redhat.demo.entity.EntityB;
 import it.redhat.demo.entity.Simple;
+import it.redhat.demo.entity.TreeNode;
 
 public class SessionFactoryBuildTest {
 
@@ -29,6 +30,16 @@ public class SessionFactoryBuildTest {
 
 		configuration.addAnnotatedClass( EntityA.class );
 		configuration.addAnnotatedClass( EntityB.class );
+
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
+		assertNotNull( sessionFactory );
+	}
+
+	@Test
+	public void test_buildSessionFactory_treeCompositeEntity() {
+		Configuration configuration = new Configuration();
+
+		configuration.addAnnotatedClass( TreeNode.class );
 
 		SessionFactory sessionFactory = configuration.buildSessionFactory();
 		assertNotNull( sessionFactory );
