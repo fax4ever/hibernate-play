@@ -34,7 +34,7 @@ public abstract class BaseSessionTest {
 	}
 
 	protected void inTransaction(Consumer<Session> consumer) {
-		try (Session session = sessionFactory.openSession()) {
+		try ( Session session = sessionFactory.openSession() ) {
 			Transaction transaction = session.beginTransaction();
 
 			try {

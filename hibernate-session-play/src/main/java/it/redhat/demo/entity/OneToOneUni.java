@@ -5,12 +5,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class EntityA {
+public class OneToOneUni {
 
 	@Id
-	private String id;
+	private Integer id;
 
 	@OneToOne
-	private EntityB b;
+	private NoRel message;
 
 }
