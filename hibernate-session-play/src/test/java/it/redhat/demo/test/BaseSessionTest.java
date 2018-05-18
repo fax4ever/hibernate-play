@@ -12,6 +12,7 @@ import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import it.redhat.demo.entity.Festival;
 import it.redhat.demo.entity.Party;
 
 /**
@@ -25,6 +26,7 @@ public abstract class BaseSessionTest {
 	public static void beforeClass() {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass( Party.class );
+		configuration.addAnnotatedClass( Festival.class );
 		sessionFactory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
 	}
 

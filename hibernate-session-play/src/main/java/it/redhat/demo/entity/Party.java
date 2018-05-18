@@ -51,4 +51,7 @@ public class Party {
 		return location;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 }
