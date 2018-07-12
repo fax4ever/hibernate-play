@@ -3,7 +3,7 @@ package it.redhat.demo.entity;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Master {
@@ -13,7 +13,7 @@ public class Master {
 
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Servant servant;
 
 	public Integer getId() {

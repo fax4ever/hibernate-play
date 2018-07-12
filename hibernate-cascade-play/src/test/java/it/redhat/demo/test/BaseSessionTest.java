@@ -20,7 +20,7 @@ import it.redhat.demo.entity.Servant;
  */
 public abstract class BaseSessionTest {
 
-	private static SessionFactory sessionFactory;
+	protected static SessionFactory sessionFactory;
 
 	@BeforeClass
 	public static void beforeClass() {
