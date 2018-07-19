@@ -12,5 +12,6 @@
     <modules>
         <module>hibernate-session-play</module>
         <module>hibernate-cascade-play</module>
+        <module>hibernate-association-play</module>
     </modules>
 </project>
