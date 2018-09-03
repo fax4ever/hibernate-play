@@ -12,7 +12,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import it.redhat.demo.entity.Master;
+import it.redhat.demo.entity.Message;
 import it.redhat.demo.entity.Servant;
+import it.redhat.demo.entity.Tag;
 
 /**
  * @author Fabio Massimo Ercoli
@@ -26,6 +28,8 @@ public abstract class BaseSessionTest {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass( Master.class );
 		configuration.addAnnotatedClass( Servant.class );
+		configuration.addAnnotatedClass( Tag.class );
+		configuration.addAnnotatedClass( Message.class );
 		sessionFactory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
 	}
 
