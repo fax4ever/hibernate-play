@@ -14,5 +14,6 @@
         <module>hibernate-cascade-play</module>
         <module>hibernate-association-play</module>
         <module>hibernate-date-play</module>
+        <module>hibernate-inheritance-play</module>
     </modules>
 </project>
