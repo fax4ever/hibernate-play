@@ -35,4 +35,16 @@ public class InheritanceMappingTest {
 			fail("MappingException expected during session factory creation");
 		}
 	}
+
+	@Test
+	public void altTablePerClassInheritance() {
+		Configuration configuration = new Configuration();
+		configuration.addAnnotatedClass( it.redhat.demo.entity.altperclass.Node.class );
+		configuration.addAnnotatedClass( it.redhat.demo.entity.altperclass.NodeLink.class );
+		configuration.addAnnotatedClass( it.redhat.demo.entity.altperclass.SimpleNode.class );
+		configuration.addAnnotatedClass( it.redhat.demo.entity.altperclass.TextNode.class );
+		try (SessionFactory factory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() ) ) {
+			assertNotNull( factory );
+		}
+	}
 }
