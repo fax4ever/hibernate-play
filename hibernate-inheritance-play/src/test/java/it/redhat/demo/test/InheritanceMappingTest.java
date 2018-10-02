@@ -1,10 +1,8 @@
 package it.redhat.demo.test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.MappingException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
@@ -24,7 +22,7 @@ public class InheritanceMappingTest {
 		}
 	}
 
-	@Test(expected = MappingException.class)
+	@Test
 	public void testTablePerClassInheritance() {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass( it.redhat.demo.entity.tableperclass.Node.class );
@@ -32,7 +30,7 @@ public class InheritanceMappingTest {
 		configuration.addAnnotatedClass( it.redhat.demo.entity.tableperclass.SimpleNode.class );
 		configuration.addAnnotatedClass( it.redhat.demo.entity.tableperclass.TextNode.class );
 		try (SessionFactory factory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() ) ) {
-			fail("MappingException expected during session factory creation");
+			assertNotNull( factory );
 		}
 	}
 

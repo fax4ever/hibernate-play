@@ -26,7 +26,9 @@ public abstract class Node {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// Using GenerationType.IDENTITY will cause:
+	// org.hibernate.MappingException: Cannot use identity column key generation with <union-subclass> mapping for: it.redhat.demo.entity.tableperclass.SimpleNode
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public String getId() {
 		return id;
 	}
