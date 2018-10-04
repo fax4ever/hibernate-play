@@ -1,9 +1,9 @@
 package it.redhat.demo.entity.altperclass;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
-import java.util.Set;
-
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -11,7 +11,9 @@ import org.hibernate.cfg.Configuration;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class InheritanceCaseTest {
 
@@ -22,6 +24,9 @@ public class InheritanceCaseTest {
 	private TextNode textChild;
 	private NodeLink linkToSimple;
 	private NodeLink linkToText;
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setUp() {
@@ -58,6 +63,11 @@ public class InheritanceCaseTest {
 
 	@Test
 	public void testPolymorphicList() {
+
+		// why this exception?
+		thrown.expect( ObjectNotFoundException.class );
+		thrown.expectMessage( "No row with the given identifier exists: [it.redhat.demo.entity.altperclass.SimpleNode#7]" );
+
 		Configuration config = new Configuration()
 				.addAnnotatedClass( Node.class )
 				.addAnnotatedClass( SimpleNode.class )
@@ -74,8 +84,11 @@ public class InheritanceCaseTest {
 		}
 
 		try ( Session session = factory.openSession() ) {
-			session.load( SimpleNode.class, parent.id );
-			assertThat( parent.getChildren() ).containsExactly( linkToSimple, linkToText );
+			SimpleNode parentReloaded = session.load( SimpleNode.class, parent.id );
+
+			// it fails here: on getChildren on Hibernate proxy
+			assertThat( parentReloaded.getChildren() ).containsExactly( linkToSimple, linkToText );
+			fail( "expecting the error just before this loc" );
 		}
 	}
 }
