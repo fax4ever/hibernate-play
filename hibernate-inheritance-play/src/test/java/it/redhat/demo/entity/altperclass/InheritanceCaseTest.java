@@ -1,5 +1,9 @@
 package it.redhat.demo.entity.altperclass;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -67,6 +71,11 @@ public class InheritanceCaseTest {
 			session.save( textChild );
 			session.save( linkToText );
 			session.save( linkToSimple );
+		}
+
+		try ( Session session = factory.openSession() ) {
+			session.load( SimpleNode.class, parent.id );
+			assertThat( parent.getChildren() ).containsExactly( linkToSimple, linkToText );
 		}
 	}
 }
