@@ -1,11 +1,10 @@
 package it.redhat.demo.entity.altperclass;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
@@ -63,11 +62,6 @@ public class InheritanceCaseTest {
 
 	@Test
 	public void testPolymorphicList() {
-
-		// why this exception?
-		thrown.expect( ObjectNotFoundException.class );
-		thrown.expectMessage( "No row with the given identifier exists: [it.redhat.demo.entity.altperclass.SimpleNode#7]" );
-
 		Configuration config = new Configuration()
 				.addAnnotatedClass( Node.class )
 				.addAnnotatedClass( SimpleNode.class )
@@ -76,19 +70,18 @@ public class InheritanceCaseTest {
 
 		factory = config.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
 		try ( Session session = factory.openSession() ) {
+			Transaction transaction = session.beginTransaction();
 			session.save( parent );
 			session.save( simpleChild );
 			session.save( textChild );
 			session.save( linkToText );
 			session.save( linkToSimple );
+			transaction.commit();
 		}
 
 		try ( Session session = factory.openSession() ) {
 			SimpleNode parentReloaded = session.load( SimpleNode.class, parent.id );
-
-			// it fails here: on getChildren on Hibernate proxy
 			assertThat( parentReloaded.getChildren() ).containsExactly( linkToSimple, linkToText );
-			fail( "expecting the error just before this loc" );
 		}
 	}
 }
