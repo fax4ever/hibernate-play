@@ -49,11 +49,13 @@ public class InheritanceCaseTest {
 		}
 
 		try ( Session session = factory.openSession() ) {
+			Transaction transaction = session.beginTransaction();
 			session.delete( parent );
 			session.delete( simpleChild );
 			session.delete( textChild );
 			session.delete( linkToText );
 			session.delete( linkToSimple );
+			transaction.commit();
 		}
 		finally {
 			factory.close();
