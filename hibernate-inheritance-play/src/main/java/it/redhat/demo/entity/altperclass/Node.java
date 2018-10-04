@@ -13,8 +13,41 @@ import javax.persistence.OneToMany;
 public abstract class Node {
 
 	@Id
-	private String id;
+	protected Integer id;
+	protected String name;
 
 	@OneToMany(mappedBy = "source")
-	private Set<NodeLink> children = new HashSet<>();
+	protected Set<NodeLink> children = new HashSet<>();
+
+	public Node() {
+	}
+
+	public Node(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<NodeLink> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<NodeLink> children) {
+		this.children = children;
+	}
 }

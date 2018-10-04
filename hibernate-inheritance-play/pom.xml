@@ -20,7 +20,7 @@
         <version.hibernate.orm>5.3.6.Final</version.hibernate.orm>
         <version.h2>1.4.196</version.h2>
         <version.junit>4.12</version.junit>
-        <version.festassert>1.4</version.festassert>
+        <version.asserj>3.11.1</version.asserj>
     </properties>
 
     <dependencies>
@@ -45,9 +45,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.easytesting</groupId>
-            <artifactId>fest-assert</artifactId>
-            <version>${version.festassert}</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${version.asserj}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
