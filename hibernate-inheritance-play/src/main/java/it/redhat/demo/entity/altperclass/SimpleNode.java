@@ -23,13 +23,12 @@ public class SimpleNode extends Node {
 		}
 		SimpleNode that = (SimpleNode) o;
 		return Objects.equals( id, that.id ) &&
-				Objects.equals( name, that.name ) &&
-				Objects.equals( children, that.children );
+				Objects.equals( name, that.name );
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash( id, name, children );
+		return Objects.hash( id, name );
 	}
 
 	@Override

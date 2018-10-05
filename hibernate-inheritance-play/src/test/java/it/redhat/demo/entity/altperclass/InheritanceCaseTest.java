@@ -40,6 +40,23 @@ public class InheritanceCaseTest {
 		linkToText = new NodeLink( 9 );
 		linkToText.assignSource( parent );
 		linkToText.assignTarget( textChild );
+
+		Configuration config = new Configuration()
+				.addAnnotatedClass( Node.class )
+				.addAnnotatedClass( SimpleNode.class )
+				.addAnnotatedClass( TextNode.class )
+				.addAnnotatedClass( NodeLink.class );
+
+		factory = config.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
+		try ( Session session = factory.openSession() ) {
+			Transaction transaction = session.beginTransaction();
+			session.save( parent );
+			session.save( simpleChild );
+			session.save( textChild );
+			session.save( linkToText );
+			session.save( linkToSimple );
+			transaction.commit();
+		}
 	}
 
 	@After
@@ -64,26 +81,33 @@ public class InheritanceCaseTest {
 
 	@Test
 	public void testPolymorphicList() {
-		Configuration config = new Configuration()
-				.addAnnotatedClass( Node.class )
-				.addAnnotatedClass( SimpleNode.class )
-				.addAnnotatedClass( TextNode.class )
-				.addAnnotatedClass( NodeLink.class );
-
-		factory = config.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
-		try ( Session session = factory.openSession() ) {
-			Transaction transaction = session.beginTransaction();
-			session.save( parent );
-			session.save( simpleChild );
-			session.save( textChild );
-			session.save( linkToText );
-			session.save( linkToSimple );
-			transaction.commit();
-		}
-
 		try ( Session session = factory.openSession() ) {
 			SimpleNode parentReloaded = session.load( SimpleNode.class, parent.id );
+			assertThat( parentReloaded ).isEqualTo( parent );
 			assertThat( parentReloaded.getChildren() ).containsExactly( linkToSimple, linkToText );
+		}
+	}
+
+	@Test
+	public void testPolymorphicList_loadLink() {
+		try ( Session session = factory.openSession() ) {
+			NodeLink nodeLoaded = session.load( NodeLink.class, linkToText.getId() );
+			assertThat( nodeLoaded ).isEqualTo( linkToText );
+
+			assertThat( nodeLoaded.getTarget() ).isEqualTo( textChild );
+
+			Node source = nodeLoaded.getSource();
+			assertThat( source ).isEqualTo( parent );
+			assertThat( source.getChildren() ).containsExactlyInAnyOrder( linkToText, linkToSimple );
+		}
+	}
+
+	@Test
+	public void testPolymorphicList_loadItem() {
+		try ( Session session = factory.openSession() ) {
+			Node textChildReloaded = session.load( Node.class, textChild.id );
+			assertThat( textChildReloaded.getId() ).isEqualTo( textChild.getId() );
+			assertThat( textChildReloaded.getName() ).isEqualTo( textChild.getName() );
 		}
 	}
 }

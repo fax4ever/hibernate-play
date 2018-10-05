@@ -35,13 +35,12 @@ public class TextNode extends Node {
 		TextNode textNode = (TextNode) o;
 		return Objects.equals( text, textNode.text ) &&
 				Objects.equals( id, textNode.id ) &&
-				Objects.equals( name, textNode.name ) &&
-				Objects.equals( children, textNode.children );
+				Objects.equals( name, textNode.name );
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash( text, id, name, children );
+		return Objects.hash( text, id, name );
 	}
 
 	@Override
