@@ -16,5 +16,6 @@
         <module>hibernate-date-play</module>
         <module>hibernate-inheritance-play</module>
         <module>hibernate-unique-play</module>
+        <module>hibernate-query-forced-bind</module>
     </modules>
 </project>
