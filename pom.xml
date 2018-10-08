@@ -15,5 +15,6 @@
         <module>hibernate-association-play</module>
         <module>hibernate-date-play</module>
         <module>hibernate-inheritance-play</module>
+        <module>hibernate-unique-play</module>
     </modules>
 </project>
