@@ -19,7 +19,7 @@ public class Document {
 	@OneToMany
 	@CollectionTable
 	@MapKeyColumn(name = "position")
-	private Map<Integer, Person> contacts = new HashMap<Integer, Person>();
+	private Map<Integer, Person> people = new HashMap<>();
 
 	public Integer getId() {
 		return id;
@@ -29,11 +29,11 @@ public class Document {
 		this.id = id;
 	}
 
-	public Map<Integer, Person> getContacts() {
-		return contacts;
+	public Map<Integer, Person> getPeople() {
+		return people;
 	}
 
-	public void setContacts(Map<Integer, Person> contacts) {
-		this.contacts = contacts;
+	public void setPeople(Map<Integer, Person> people) {
+		this.people = people;
 	}
 }

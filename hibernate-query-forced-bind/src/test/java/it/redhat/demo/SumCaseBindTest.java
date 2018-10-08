@@ -11,10 +11,11 @@ import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -23,11 +24,11 @@ import org.junit.Test;
  */
 public class SumCaseBindTest {
 
-	private EntityManagerFactory autoFactory;
-	private EntityManagerFactory bindFactory;
+	private static EntityManagerFactory autoFactory;
+	private static EntityManagerFactory bindFactory;
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 		autoFactory = initEmf( "literal-handling-auto" );
 		bindFactory = initEmf( "literal-handling-bind" );
 	}
@@ -42,8 +43,8 @@ public class SumCaseBindTest {
 		queryLiteralOn( bindFactory );
 	}
 
-	@After
-	public void tearDown() {
+	@AfterClass
+	public static void tearDown() {
 		if ( autoFactory != null ) {
 			autoFactory.close();
 		}
@@ -60,10 +61,12 @@ public class SumCaseBindTest {
 			Root<Document> document = query.from( Document.class );
 			Root<Person> person = query.from( Person.class );
 
+			Predicate documentHavingAPersonWithID = cb.equal( document.join( "people", JoinType.LEFT ).get( "id" ), person.get( "id" ) );
+
 			query.multiselect(
 				document.get( "id" ),
 				cb.sum(cb.<Long>selectCase()
-					.when( cb.equal( document.join( "contacts", JoinType.LEFT ).get( "id" ), person.get( "id" ) ), cb.literal( 1L ) )
+					.when( documentHavingAPersonWithID, cb.literal( 1L ) )
 					.otherwise( cb.literal( 0L ) )
 				).as( Long.class )
 			)
@@ -79,7 +82,7 @@ public class SumCaseBindTest {
 		}
 	}
 
-	private EntityManagerFactory initEmf(String unit) {
+	private static EntityManagerFactory initEmf(String unit) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory( unit );
 		EntityManager em = emf.createEntityManager();
 		try {
@@ -95,8 +98,8 @@ public class SumCaseBindTest {
 			p2.getLocalized().put( 1, "p2.1" );
 			p2.getLocalized().put( 2, "p2.2" );
 
-			d.getContacts().put( 1, p1 );
-			d.getContacts().put( 2, p2 );
+			d.getPeople().put( 1, p1 );
+			d.getPeople().put( 2, p2 );
 
 			em.persist( p1 );
 			em.persist( p2 );
