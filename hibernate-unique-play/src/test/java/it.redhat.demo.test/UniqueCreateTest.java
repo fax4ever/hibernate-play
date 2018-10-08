@@ -29,8 +29,8 @@ public class UniqueCreateTest {
 
 	@Before
 	public void setUp() {
-		client = new Client( CLIENT_NAME );
-		user = new User( USER_NAME, 7l, 39l );
+		client = new Client( 7, CLIENT_NAME );
+		user = new User( 3, USER_NAME, 7l, 39l );
 		user.setClient( client );
 
 		Configuration config = new Configuration()
