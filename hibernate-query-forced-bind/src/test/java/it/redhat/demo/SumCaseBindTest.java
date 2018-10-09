@@ -43,6 +43,90 @@ public class SumCaseBindTest {
 		queryLiteralOn( bindFactory );
 	}
 
+	@Test
+	public void testCriteria_stringLiteral_strategyAuto() {
+		EntityManager em = autoFactory.createEntityManager();
+		try {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Person> cq = cb.createQuery( Person.class );
+			Root<Person> person = cq.from( Person.class );
+
+			cq.select( person )
+					.where( cb.equal( person.get( "name" ), "Davide" ) );
+
+			List<Person> people = em.createQuery( cq ).getResultList();
+			assertThat( people ).hasSize( 2 );
+		}
+		finally {
+			if ( em != null ) {
+				em.close();
+			}
+		}
+	}
+
+	@Test
+	public void testCriteria_numberLiteral_strategyAuto() {
+		EntityManager em = autoFactory.createEntityManager();
+		try {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Person> cq = cb.createQuery( Person.class );
+			Root<Person> person = cq.from( Person.class );
+
+			cq.select( person )
+					.where( cb.equal( person.get( "petsOwned" ), 5 ) );
+
+			List<Person> people = em.createQuery( cq ).getResultList();
+			assertThat( people ).hasSize( 2 );
+		}
+		finally {
+			if ( em != null ) {
+				em.close();
+			}
+		}
+	}
+
+	@Test
+	public void testCriteria_stringLiteral_strategyBind() {
+		EntityManager em = bindFactory.createEntityManager();
+		try {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Person> cq = cb.createQuery( Person.class );
+			Root<Person> person = cq.from( Person.class );
+
+			cq.select( person )
+					.where( cb.equal( person.get( "name" ), "Davide" ) );
+
+			List<Person> people = em.createQuery( cq ).getResultList();
+			assertThat( people ).hasSize( 2 );
+		}
+		finally {
+			if ( em != null ) {
+				em.close();
+			}
+		}
+	}
+
+	@Test
+	public void testCriteria_numberLiteral_strategyBind() {
+		EntityManager em = bindFactory.createEntityManager();
+		try {
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Person> cq = cb.createQuery( Person.class );
+			Root<Person> person = cq.from( Person.class );
+
+			cq.select( person )
+					.where( cb.equal( person.get( "petsOwned" ), 5 ) );
+
+			List<Person> people = em.createQuery( cq ).getResultList();
+			assertThat( people ).hasSize( 2 );
+		}
+		finally {
+			if ( em != null ) {
+				em.close();
+			}
+		}
+	}
+
 	@AfterClass
 	public static void tearDown() {
 		if ( autoFactory != null ) {
@@ -96,14 +180,14 @@ public class SumCaseBindTest {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 
-			Person p1 = new Person();
-			Person p2 = new Person();
+			Person p1 = new Person( "Davide", 3 );
+			Person p2 = new Person( "Sanne", 5 );
 			Document d1 = new Document( 7 );
 			d1.associate( p1, p2 );
 
-			Person p3 = new Person();
-			Person p4 = new Person();
-			Person p5 = new Person();
+			Person p3 = new Person( "Guillaume", 3 );
+			Person p4 = new Person( "Davide", 1 );
+			Person p5 = new Person( "Yoann", 5 );
 			Document d2 = new Document( 3 );
 			d2.associate( p3, p4, p5 );
 

@@ -11,6 +11,17 @@ public class Person {
 	@GeneratedValue
 	private Integer id;
 
+	private String name;
+	private Integer petsOwned;
+
+	public Person() {
+	}
+
+	public Person(String name, Integer petsOwned) {
+		this.name = name;
+		this.petsOwned = petsOwned;
+	}
+
 	public Integer getId() {
 		return id;
 	}
