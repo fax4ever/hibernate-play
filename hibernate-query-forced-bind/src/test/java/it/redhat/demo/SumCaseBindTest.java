@@ -89,9 +89,9 @@ public class SumCaseBindTest {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 
-			Person p1 = new Person();
-			Person p2 = new Person();
-			Document d = new Document();
+			Person p1 = new Person(3);
+			Person p2 = new Person(9);
+			Document d = new Document(7);
 
 			p1.getLocalized().put( 1, "p1.1" );
 			p1.getLocalized().put( 2, "p1.2" );

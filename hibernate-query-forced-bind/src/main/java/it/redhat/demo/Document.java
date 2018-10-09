@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.CollectionTable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
@@ -13,13 +12,19 @@ import javax.persistence.OneToMany;
 public class Document {
 
 	@Id
-	@GeneratedValue
 	private Integer id;
 
 	@OneToMany
 	@CollectionTable
 	@MapKeyColumn(name = "position")
 	private Map<Integer, Person> people = new HashMap<>();
+
+	public Document() {
+	}
+
+	public Document(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getId() {
 		return id;

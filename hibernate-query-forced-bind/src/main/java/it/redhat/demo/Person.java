@@ -4,18 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Person {
 
 	@Id
-	@GeneratedValue
 	private Integer id;
 
 	@ElementCollection
 	private Map<Integer, String> localized = new HashMap<Integer, String>();
+
+	public Person() {
+	}
+
+	public Person(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getId() {
 		return id;
