@@ -64,23 +64,23 @@ public class SumCaseBindTest {
 			Predicate documentHavingAPersonWithID = cb.equal( document.join( "people", JoinType.LEFT ).get( "id" ), person.get( "id" ) );
 
 			query.multiselect(
-				document.get( "id" ),
-				cb.sum(cb.<Long>selectCase()
-					.when( documentHavingAPersonWithID, cb.literal( 1L ) )
-					.otherwise( cb.literal( 0L ) )
-				).as( Long.class )
+					document.get( "id" ),
+					cb.sum( cb.<Long>selectCase()
+							.when( documentHavingAPersonWithID, cb.literal( 1L ) )
+							.otherwise( cb.literal( 0L ) )
+					).as( Long.class )
 			)
-			.groupBy( document.get( "id" ) )
-			.orderBy( cb.asc(document.get( "id" )) );
+					.groupBy( document.get( "id" ) )
+					.orderBy( cb.asc( document.get( "id" ) ) );
 
 			List<Tuple> tuples = em.createQuery( query ).getResultList();
 			assertThat( tuples ).hasSize( 3 );
-			assertThat( tuples.get( 0 ).get( 0 ) ).isEqualTo( 1 );
+			assertThat( tuples.get( 0 ).get( 0 ) ).isEqualTo( 3 );
 			assertThat( tuples.get( 0 ).get( 1 ) ).isEqualTo( 3l );
-			assertThat( tuples.get( 1 ).get( 0 ) ).isEqualTo( 3 );
-			assertThat( tuples.get( 1 ).get( 1 ) ).isEqualTo( 0l );
-			assertThat( tuples.get( 2 ).get( 0 ) ).isEqualTo( 7 );
-			assertThat( tuples.get( 2 ).get( 1 ) ).isEqualTo( 2l );
+			assertThat( tuples.get( 1 ).get( 0 ) ).isEqualTo( 7 );
+			assertThat( tuples.get( 1 ).get( 1 ) ).isEqualTo( 2l );
+			assertThat( tuples.get( 2 ).get( 0 ) ).isEqualTo( 9 );
+			assertThat( tuples.get( 2 ).get( 1 ) ).isEqualTo( 0l );
 		}
 		finally {
 			if ( em != null ) {
@@ -96,22 +96,18 @@ public class SumCaseBindTest {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
 
-			Person p1 = new Person(73);
-			Person p2 = new Person(79);
-			Document d1 = new Document(7);
+			Person p1 = new Person();
+			Person p2 = new Person();
+			Document d1 = new Document( 7 );
+			d1.associate( p1, p2 );
 
-			Person p3 = new Person(13);
-			Person p4 = new Person(19);
-			Person p5 = new Person(17);
-			Document d2 = new Document(1);
+			Person p3 = new Person();
+			Person p4 = new Person();
+			Person p5 = new Person();
+			Document d2 = new Document( 3 );
+			d2.associate( p3, p4, p5 );
 
-			Document d3 = new Document(3);
-
-			d1.getPeople().put( 1, p1 );
-			d1.getPeople().put( 2, p2 );
-			d2.getPeople().put( 1, p3 );
-			d2.getPeople().put( 2, p4 );
-			d2.getPeople().put( 3, p5 );
+			Document d3 = new Document( 9 );
 
 			em.persist( p1 );
 			em.persist( p2 );

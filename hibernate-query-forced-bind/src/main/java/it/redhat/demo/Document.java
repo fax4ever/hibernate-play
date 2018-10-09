@@ -41,4 +41,11 @@ public class Document {
 	public void setPeople(Map<Integer, Person> people) {
 		this.people = people;
 	}
+
+	public void associate(Person... people) {
+		this.people = new HashMap<>();
+		for ( int i = 0; i < people.length; i++ ) {
+			this.people.put( i+1, people[i] );
+		}
+	}
 }

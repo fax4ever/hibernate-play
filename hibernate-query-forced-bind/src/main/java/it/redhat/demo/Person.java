@@ -1,20 +1,15 @@
 package it.redhat.demo;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Person {
 
 	@Id
+	@GeneratedValue
 	private Integer id;
-
-	public Person() {
-	}
-
-	public Person(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getId() {
 		return id;
