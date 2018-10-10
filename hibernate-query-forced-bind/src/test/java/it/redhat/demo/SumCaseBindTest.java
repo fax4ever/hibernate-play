@@ -173,7 +173,7 @@ public class SumCaseBindTest {
 		}
 	}
 
-	private static EntityManagerFactory initEmf(String unit) {
+	protected static EntityManagerFactory initEmf(String unit) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory( unit );
 		EntityManager em = emf.createEntityManager();
 		try {
