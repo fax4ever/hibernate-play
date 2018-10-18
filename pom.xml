@@ -17,5 +17,6 @@
         <module>hibernate-inheritance-play</module>
         <module>hibernate-unique-play</module>
         <module>hibernate-query-forced-bind</module>
+        <module>hibernate-element-collection-play</module>
     </modules>
 </project>
