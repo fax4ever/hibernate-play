@@ -14,7 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UniqueCreateTest {
+public class ElementCollectionTest {
 
 	public static final String NAME = "Office";
 	public static final String ADDRESS = "via Andrea Doria, 41M 00192 Rome Italy";
