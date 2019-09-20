@@ -18,5 +18,6 @@
         <module>hibernate-unique-play</module>
         <module>hibernate-query-forced-bind</module>
         <module>hibernate-element-collection-play</module>
+        <module>hibernate-compositeid-play</module>
     </modules>
 </project>
