@@ -32,3 +32,4 @@ work/
 test-output/
 transaction.log
 infinispan.log
+testdb
