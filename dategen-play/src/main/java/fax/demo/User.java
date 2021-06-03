@@ -6,13 +6,19 @@
  */
 package fax.demo;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Source;
+import org.hibernate.annotations.SourceType;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class User {
@@ -25,6 +31,13 @@ public class User {
 
 	@CreationTimestamp
 	private LocalDateTime moment;
+
+	@Version
+	@Source(SourceType.DB)
+	private Date lastUpdate;
+
+	@Type(type = "org.hibernate.type.DbTimestampType")
+	private Timestamp bla;
 
 	public User() {
 	}
@@ -56,5 +69,21 @@ public class User {
 
 	public void setMoment(LocalDateTime moment) {
 		this.moment = moment;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public Timestamp getBla() {
+		return bla;
+	}
+
+	public void setBla(Timestamp bla) {
+		this.bla = bla;
 	}
 }
