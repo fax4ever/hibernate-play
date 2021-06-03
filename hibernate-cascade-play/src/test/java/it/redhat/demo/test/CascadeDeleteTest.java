@@ -10,8 +10,8 @@ import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import org.junit.Test;
 
-import it.redhat.demo.entity.Master;
-import it.redhat.demo.entity.Servant;
+import it.redhat.demo.entity.Leader;
+import it.redhat.demo.entity.Follower;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -20,30 +20,30 @@ public class CascadeDeleteTest extends BaseSessionTest {
 
 	@Test
 	public void test() {
-		final Servant servant = new Servant();
-		servant.setId( 1 );
-		servant.setName( "S" );
+		final Follower follower = new Follower();
+		follower.setId( 1 );
+		follower.setName( "S" );
 
-		final Master masterA = new Master();
-		masterA.setId( 2 );
-		masterA.setName( "A" );
-		masterA.setServant( servant );
+		final Leader leaderA = new Leader();
+		leaderA.setId( 2 );
+		leaderA.setName( "A" );
+		leaderA.setFollower( follower );
 
-		final Master masterB = new Master();
-		masterB.setId( 3 );
-		masterB.setName( "B" );
-		masterB.setServant( servant );
+		final Leader leaderB = new Leader();
+		leaderB.setId( 3 );
+		leaderB.setName( "B" );
+		leaderB.setFollower( follower );
 
 		inTransaction( session -> {
-			session.persist( masterA );
-			session.persist( masterB );
+			session.persist( leaderA );
+			session.persist( leaderB );
 		} );
 
 		try (Session session = sessionFactory.openSession()) {
 			Transaction transaction = session.beginTransaction();
-			Master masterReloaded = session.load( Master.class, 2 );
+			Leader leaderReloaded = session.load( Leader.class, 2 );
 			try {
-				session.delete( masterReloaded );
+				session.delete( leaderReloaded );
 				transaction.commit();
 				fail("Exception expected here! On fflush!");
 			} catch (PersistenceException ex) {
@@ -54,22 +54,22 @@ public class CascadeDeleteTest extends BaseSessionTest {
 		}
 
 		inTransaction( session -> {
-			Master masterReloaded = session.load( Master.class, 2 );
-			masterReloaded.setServant( null );
-			session.delete( masterReloaded );
+			Leader leaderReloaded = session.load( Leader.class, 2 );
+			leaderReloaded.setFollower( null );
+			session.delete( leaderReloaded );
 		} );
 
 		inTransaction( session -> {
-			Master masterReloaded = session.load( Master.class, 3 );
-			session.delete( masterReloaded );
+			Leader leaderReloaded = session.load( Leader.class, 3 );
+			session.delete( leaderReloaded );
 		} );
 
 		inTransaction( session -> {
-			List masters = session.createQuery( "from Master" ).list();
-			List servants = session.createQuery( "from Servant" ).list();
+			List leaders = session.createQuery( "from Leader" ).list();
+			List followers = session.createQuery( "from Follower" ).list();
 
-			assertThat( masters ).isEmpty();
-			assertThat( servants ).isEmpty();
+			assertThat( leaders ).isEmpty();
+			assertThat( followers ).isEmpty();
 		} );
 	}
 }

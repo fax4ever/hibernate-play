@@ -1,27 +1,20 @@
 package it.redhat.demo.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Servant {
+public class Leader {
 
 	@Id
 	private Integer id;
 
 	private String name;
 
-	@ManyToOne
-	private Master master;
-
-	public Servant() {
-	}
-
-	public Servant(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Follower follower;
 
 	public Integer getId() {
 		return id;
@@ -39,11 +32,11 @@ public class Servant {
 		this.name = name;
 	}
 
-	public Master getMaster() {
-		return master;
+	public Follower getFollower() {
+		return follower;
 	}
 
-	public void setMaster(Master master) {
-		this.master = master;
+	public void setFollower(Follower follower) {
+		this.follower = follower;
 	}
 }

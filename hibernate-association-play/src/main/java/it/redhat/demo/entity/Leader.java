@@ -7,20 +7,20 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Master {
+public class Leader {
 
 	@Id
 	private Integer id;
 
 	private String name;
 
-	@OneToMany(mappedBy = "master")
-	private List<Servant> servants = new ArrayList<>();
+	@OneToMany(mappedBy = "leader")
+	private List<Follower> followers = new ArrayList<>();
 
-	public Master() {
+	public Leader() {
 	}
 
-	public Master(Integer id, String name) {
+	public Leader(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -41,11 +41,11 @@ public class Master {
 		this.name = name;
 	}
 
-	public List<Servant> getServants() {
-		return servants;
+	public List<Follower> getFollowers() {
+		return followers;
 	}
 
-	public void setServants(List<Servant> servants) {
-		this.servants = servants;
+	public void setFollowers(List<Follower> followers) {
+		this.followers = followers;
 	}
 }

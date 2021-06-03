@@ -11,9 +11,9 @@ import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import it.redhat.demo.entity.Master;
+import it.redhat.demo.entity.Leader;
 import it.redhat.demo.entity.Message;
-import it.redhat.demo.entity.Servant;
+import it.redhat.demo.entity.Follower;
 import it.redhat.demo.entity.Tag;
 
 /**
@@ -26,8 +26,8 @@ public abstract class BaseSessionTest {
 	@BeforeClass
 	public static void beforeClass() {
 		Configuration configuration = new Configuration();
-		configuration.addAnnotatedClass( Master.class );
-		configuration.addAnnotatedClass( Servant.class );
+		configuration.addAnnotatedClass( Leader.class );
+		configuration.addAnnotatedClass( Follower.class );
 		configuration.addAnnotatedClass( Tag.class );
 		configuration.addAnnotatedClass( Message.class );
 		sessionFactory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
