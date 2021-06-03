@@ -20,5 +20,7 @@
         <module>hibernate-element-collection-play</module>
         <module>hibernate-compositeid-play</module>
         <module>hibernate-persistence-unit-play</module>
+        <module>dategen-play</module>
+        <module>util</module>
     </modules>
 </project>
