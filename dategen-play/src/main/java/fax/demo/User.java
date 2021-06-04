@@ -6,19 +6,22 @@
  */
 package fax.demo;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Source;
 import org.hibernate.annotations.SourceType;
-import org.hibernate.annotations.Type;
 
 @Entity
 public class User {
@@ -29,15 +32,18 @@ public class User {
 
 	private String name;
 
-	@CreationTimestamp
 	private LocalDateTime moment;
 
 	@Version
+	@Column(updatable = false)
 	@Source(SourceType.DB)
 	private Date lastUpdate;
 
-	@Type(type = "org.hibernate.type.DbTimestampType")
-	private Timestamp bla;
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Generated(value = GenerationTime.INSERT)
+	@ColumnDefault(value = "CURRENT_TIMESTAMP")
+	@Column(updatable = false)
+	private Date tsColumnDefault;
 
 	public User() {
 	}
@@ -79,11 +85,11 @@ public class User {
 		this.lastUpdate = lastUpdate;
 	}
 
-	public Timestamp getBla() {
-		return bla;
+	public Date getTsColumnDefault() {
+		return tsColumnDefault;
 	}
 
-	public void setBla(Timestamp bla) {
-		this.bla = bla;
+	public void setTsColumnDefault(Date tsColumnDefault) {
+		this.tsColumnDefault = tsColumnDefault;
 	}
 }

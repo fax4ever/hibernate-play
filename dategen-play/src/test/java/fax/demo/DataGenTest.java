@@ -9,13 +9,10 @@ package fax.demo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
 
 import org.junit.Test;
 
@@ -23,24 +20,54 @@ public class DataGenTest extends BaseSessionTest{
 
 	@Test
 	public void test() {
+		AtomicReference<Object> ref = new AtomicReference<>();
+
 		inTransaction( session -> {
 			User user = new User();
 			session.persist( user );
-
-//			CriteriaBuilder builder = session.getCriteriaBuilder();
-//			CriteriaUpdate<User> criteria = builder.createCriteriaUpdate( User.class );
-//			criteria.set( "moment", builder.currentTimestamp() );
-//			session.createQuery( criteria ).executeUpdate();
-
 			assertThat( user ).isNotNull();
+			ref.set( user.getLastUpdate() );
+		} );
 
+		inTransaction( session -> {
+			User load = session.load( User.class, 1L );
+			load.setName( "CIAOOO" );
+			session.merge( load );
+
+			assertThat( load ).isNotNull();
+			assertThat( load.getLastUpdate() ).isEqualTo( ref.get() );
+		} );
+
+		inTransaction( session -> {
+			User load = session.load( User.class, 1L );
+
+			assertThat( load ).isNotNull();
+			assertThat( load.getLastUpdate() ).isEqualTo( ref.get() );
+		} );
+	}
+
+	@Test
+	public void test2() {
+		inTransaction( session -> {
 			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<java.sql.Timestamp> criteria = builder.createQuery( java.sql.Timestamp.class );
-			criteria.from( User.class );
-			criteria.select( builder.currentTimestamp() );
-			List<Timestamp> resultList = session.createQuery( criteria ).getResultList();
+			CriteriaUpdate<User> criteria = builder.createCriteriaUpdate( User.class );
+			Root<User> root = criteria.from( User.class );
+			criteria.set( root.<Timestamp>get( "moment" ), builder.currentTimestamp() );
+			session.createQuery( criteria ).executeUpdate();
+		} );
+	}
 
-			assertThat( resultList ).isNotEmpty();
+	@Test
+	public void test3() {
+		inTransaction( session -> {
+			User user = new User();
+			session.persist( user );
+			assertThat( user ).isNotNull();
+		} );
+
+		inTransaction( session -> {
+			User user = session.load( User.class, 1L );
+			assertThat( user ).isNotNull();
 		} );
 	}
 }
