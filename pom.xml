@@ -21,6 +21,6 @@
         <module>hibernate-compositeid-play</module>
         <module>hibernate-persistence-unit-play</module>
         <module>dategen-play</module>
-        <module>util</module>
+        <module>hibernate-query-type-operator</module>
     </modules>
 </project>
