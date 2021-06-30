@@ -21,6 +21,7 @@ import org.hibernate.query.Query;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TypeOperatorTest {
@@ -41,7 +42,7 @@ public class TypeOperatorTest {
 	}
 
 	@Test
-	public void test() {
+	public void baseClassOnlyInstances() {
 		try ( Session session = sessionFactory.openSession() ) {
 			// we want all animal that are not dogs
 			Set<Class<Animal>> types = Collections.singleton( Animal.class );
@@ -62,10 +63,26 @@ public class TypeOperatorTest {
 		}
 	}
 
+	@Test
+	@Ignore // verify why this doesn't work
+	public void noHierarchy() {
+		try ( Session session = sessionFactory.openSession() ) {
+			Set<Class<Box>> types = Collections.singleton( Box.class );
+
+			Query<Box> query = session.createQuery(
+					"select e from Box e where type(e) in (:types)", Box.class );
+			query.setParameterList( "types", types );
+
+			List<Box> boxes = query.getResultList();
+			assertThat( boxes ).isEmpty();
+		}
+	}
+
 	private void initSessionFactory() {
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass( Animal.class );
 		configuration.addAnnotatedClass( Dog.class );
+		configuration.addAnnotatedClass( Box.class );
 		sessionFactory = configuration.buildSessionFactory( new StandardServiceRegistryBuilder().build() );
 	}
 
